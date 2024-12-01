@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troca de Letras - Edição Animada</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+            color: #00FF00;
+            overflow: hidden;
+            font-size: 24px;
+            animation: bg-pan 5s infinite alternate;
+        }
+
+        @keyframes bg-pan {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .symbol-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 20px; /* Espaçamento entre os elementos */
+            width: 80%;
+            justify-items: center;
+            margin: 20px 0;
+        }
+
+        .symbol {
+            font-size: 40px;
+            background-color: #333;
+            color: #00FF00;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px; /* Tamanho fixo do símbolo */
+            height: 100px; /* Tamanho fixo do símbolo */
+        }
+
+        .symbol img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain; /* Garante que a imagem mantenha a proporção */
+        }
+
+        .symbol:hover {
+            background-color: #111;
+            transform: rotate(10deg);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #00FF00;
+            width: 85%;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .letter-box {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .letter {
+            font-size: 50px;
+            width: 60px;
+            height: 60px;
+            display: inline-block;
+            text-align: center;
+            line-height: 60px;
+            background-color: #333;
+            color: #00FF00;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid #00FF00;
+        }
+
+        .letter:hover {
+            background-color: #111;
+            transform: rotate(10deg);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .arrow, button {
+            background-color: #111;
+            color: #00FF00;
+            font-size: 18px;
+            border: 1px solid #00FF00;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .arrow:hover, button:hover {
+            background-color: #00FF00;
+            color: black;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            margin-top: 20px;
+            font-size: 20px;
+            padding: 10px 20px;
+            letter-spacing: 1.2px;
+            border: 1px solid #00FF00;
+        }
+
+        button:hover {
+            background-color: #00FF00;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        #feedback {
+            font-size: 20px;
+            color: #FF0000;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.4s;
+        }
+
+        .modal.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content{
+            background-color: #000000;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            animation: pop-in 0.5s ease-out;
+            font-family: 'Courier New', Courier, monospace;
+            border: 2px solid #00FF00; /* Borda verde */
+        }
+        .modal-fail{
+            background-color: #000000;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            animation: pop-in 0.5s ease-out;
+            font-family: 'Courier New', Courier, monospace;
+            border: 2px solid #ff0000; /* Borda verde */
+        }
+
+
+        .modal-fail {
+            background-color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            border: 2px solid #ff0000; /* Borda verde */
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .fail-msg {
+            font-size: 22px;
+            animation: glitch 1s infinite;
+            color: #FF0000;
+        }
+
+        /* Estilo dos botões "Continuar" e "Tentar novamente" */
+        .modal-fail button {
+            background-color: black;
+            color: #ff0000;
+            font-size: 18px;
+            border: 2px solid #ff0000;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            letter-spacing: 1.5px;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .modal-content button{
+            background-color: black;
+            color: #00ff04;
+            font-size: 18px;
+            border: 2px solid #00ff11;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            letter-spacing: 1.5px;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .modal-content button:hover{
+            background-color: #00ff26;
+            color: black;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-fail button:hover {
+            background-color: #ff0000;
+            color: black;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .espaco {
+            background-color: transparent;
+            height: 5%;
+        }
+    </style>
+</head>
+<body>
+    <div class="symbol-section">
+        <div class="symbol"><img src="simbolos/w.png" alt="w"></div>
+        <div class="symbol"><img src="simbolos/f.png" alt="f"></div>
+        <div class="symbol"><img src="simbolos/k.png" alt="k"></div>
+        <div class="symbol"><img src="simbolos/m.png" alt="m"></div>
+        <div class="symbol"><img src="simbolos/a.png" alt="a"></div>
+    </div>
+
+    <div class="espaco"></div>
+    
+    <div class="container">
+        <div class="letter-box">
+            <button class="arrow" onclick="changeLetter(0, 1)">↑</button>
+            <div class="letter" id="letter-0">A</div>
+            <button class="arrow" onclick="changeLetter(0, -1)">↓</button>
+        </div>
+        <div class="letter-box">
+            <button class="arrow" onclick="changeLetter(1, 1)">↑</button>
+            <div class="letter" id="letter-1">A</div>
+            <button class="arrow" onclick="changeLetter(1, -1)">↓</button>
+        </div>
+        <div class="letter-box">
+            <button class="arrow" onclick="changeLetter(2, 1)">↑</button>
+            <div class="letter" id="letter-2">A</div>
+            <button class="arrow" onclick="changeLetter(2, -1)">↓</button>
+        </div>
+        <div class="letter-box">
+            <button class="arrow" onclick="changeLetter(3, 1)">↑</button>
+            <div class="letter" id="letter-3">A</div>
+            <button class="arrow" onclick="changeLetter(3, -1)">↓</button>
+        </div>
+        <div class="letter-box">
+            <button class="arrow" onclick="changeLetter(4, 1)">↑</button>
+            <div class="letter" id="letter-4">A</div>
+            <button class="arrow" onclick="changeLetter(4, -1)">↓</button>
+        </div>
+        <button onclick="validateAnswer()">Validar</button>
+        <p id="feedback"></p>
+    </div>
+
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <button onclick="continueGame()">Continuar</button>
+        </div>
+    </div>
+
+    <div id="fail-modal" class="modal">
+        <div class="modal-fail">
+            <p class="fail-msg">CÓDIGO ERRADO</p>
+            <button onclick="resetGame()">Tentar novamente</button>
+        </div>
+    </div>
+
+    <script>
+        let letters = ['A', 'A', 'A', 'A', 'A'];
+
+        function changeLetter(index, direction) {
+            let currentLetter = letters[index];
+            let newLetter = String.fromCharCode(currentLetter.charCodeAt(0) + direction);
+            if (newLetter >= 'A' && newLetter <= 'Z') {
+                letters[index] = newLetter;
+                document.getElementById(`letter-${index}`).innerText = newLetter;
+            }
+        }
+
+        function validateAnswer() {
+            const correctAnswer = ['W', 'F', 'K', 'M', 'A'];
+            if (JSON.stringify(letters) === JSON.stringify(correctAnswer)) {
+                document.getElementById('success-modal').classList.add('show');
+            } else {
+                document.getElementById('fail-modal').classList.add('show');
+            }
+        }
+
+        function continueGame() {
+            // Redireciona para a página de "Você Salvou o Dia!"
+            window.location.href = "salvo.html"; // Nome do arquivo da página de celebração
+        }
+
+        function resetGame() {
+            document.getElementById('fail-modal').classList.remove('show');
+            letters = ['A', 'A', 'A', 'A', 'A'];
+            for (let i = 0; i < letters.length; i++) {
+                document.getElementById(`letter-${i}`).innerText = letters[i];
+            }
+        }
+    </script>
+</body>
+</html>

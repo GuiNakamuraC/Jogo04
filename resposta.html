@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troca de Letras - Edição Animada</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+            color: #00FF00;
+            overflow: hidden;
+        }
+
+        .symbol-section {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 20px;
+            width: 90%;
+            justify-items: center;
+            margin: 20px 0;
+        }
+
+        .symbol {
+            font-size: 40px;
+            background-color: #333;
+            border-radius: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .symbol img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: opacity 0.3s ease;
+        }
+
+        .symbol .letter {
+            position: absolute;
+            font-size: 2em;
+            color: #00FF00;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .symbol:hover img {
+            opacity: 0;
+        }
+
+        .symbol:hover .letter {
+            opacity: 1;
+        }
+
+        .symbol:hover {
+            transform: rotate(360deg); /* Gira o elemento */
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <div class="symbol-section" id="symbol-section">
+        <!-- Os símbolos serão gerados dinamicamente pelo JavaScript -->
+    </div>
+
+    <script>
+        function createSymbols() {
+            const section = document.getElementById("symbol-section");
+            for (let i = 0; i < 26; i++) {
+                const symbolDiv = document.createElement("div");
+                symbolDiv.classList.add("symbol");
+
+                // Adiciona a imagem
+                const img = document.createElement("img");
+                img.src = `simbolos/${String.fromCharCode(97 + i)}.png`;
+                img.alt = `símbolo ${String.fromCharCode(65 + i)}`;
+                symbolDiv.appendChild(img);
+
+                // Adiciona a letra sobreposta
+                const letterSpan = document.createElement("span");
+                letterSpan.classList.add("letter");
+                letterSpan.textContent = String.fromCharCode(65 + i); // Letra maiúscula
+                symbolDiv.appendChild(letterSpan);
+
+                section.appendChild(symbolDiv);
+            }
+        }
+
+        // Cria os símbolos ao carregar a página
+        createSymbols();
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Você Salvou o Dia!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: black;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            animation: bg-flicker 10s infinite alternate;
+        }
+
+        @keyframes bg-flicker {
+            0% { background-color: #000; }
+            50% { background-color: #003300; }
+            100% { background-color: #000; }
+        }
+
+        .container {
+            text-align: center;
+            animation: zoom-in 1s ease-in-out;
+        }
+
+        @keyframes zoom-in {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 50px;
+            margin: 0;
+            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(0, 255, 0, 0.5), 0 0 20px rgba(0, 255, 0, 0.3);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 30px rgba(0, 255, 0, 0.5);
+            }
+        }
+
+        p {
+            font-size: 20px;
+            margin-top: 20px;
+            animation: bounce 1.5s infinite;
+            font-weight: bold;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        button {
+            background-color: #00FF00;
+            color: black;
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            }
+            to {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(0, 255, 0, 1);
+            }
+        }
+
+        button:hover {
+            background-color: #008000;
+        }
+
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .confetti div {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #00FF00;
+            opacity: 0.7;
+            animation: fall 5s infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>VOCÊ SALVOU O DIA!</h1>
+        <p>Parabéns, com sua habilidade incrível você salvou esta empresa!<br>Vá pegar seu prêmio!</p>
+        <button onclick="location.href='index.html'">Voltar ao Início</button>
+    </div>
+
+    <div class="confetti">
+        <!-- Gera 50 pedaços de confete -->
+        <script>
+            for (let i = 0; i < 50; i++) {
+                let confettiPiece = document.createElement('div');
+                confettiPiece.style.left = Math.random() * 100 + 'vw';
+                confettiPiece.style.animationDelay = Math.random() * 5 + 's';
+                confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                document.querySelector('.confetti').appendChild(confettiPiece);
+            }
+        </script>
+    </div>
+</body>
+</html>
