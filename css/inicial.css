@@ -122,7 +122,7 @@ body {
 }
 
 .espaco {
-    width: 550px; /* Largura do retângulo */
+    width: 850px; /* Largura do retângulo */
     height: 45px; /* Altura do retângulo */
     background: rgba(30, 30, 30, 0.9); /* Cor do fundo */
     margin: 20px; /* Espaçamento ao redor do retângulo */
